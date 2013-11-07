@@ -1,4 +1,4 @@
-window.kidoma = (data) ->
+window.kidomi = (data) ->
     parseArray(data)
 
 parseArray = (data) ->
