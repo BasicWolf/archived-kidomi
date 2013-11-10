@@ -1,9 +1,5 @@
-window['kidomi'] = kidomi = (data) ->
-    parseArray(data)
-
-
-kidomi.parseArray =
-parseArray = (data) ->
+window['kidomi'] =
+kidomi = (data) ->
     if isString(data)
         return document.createTextNode(data)
 
@@ -11,8 +7,6 @@ parseArray = (data) ->
         throw "Expected an array, got: #{data}"
     if data.length == 0
         throw 'Expected a non-empty array'
-    else if data.length > 3
-        throw 'Array can contain 3 items max.'
 
     tagToken = data[0]
     tagData = parseTagToken(tagToken)
@@ -24,20 +18,32 @@ parseArray = (data) ->
     elem.id = tagData.id
     elem.className = tagData.classes.join(' ')
 
-    switch data.length
-        when 2
-            token = data[1]
-            if isString(token) or isArray(token)
-                childElem = parseArray(token)
-            else
-                parsedAttr = parseAttributes(token)
-                addAttributes(elem, parsedAttr)
-                childElem = parseArray('')
-            elem.appendChild(childElem)
-        when 3
+    if data.length == 2
+        # Cases:
+        # ['elem', 'text']
+        # ['elem', ['sub-elem']]
+        # ['elem', {'attr1' : value}]
+        token = data[1]
+        if isString(token) or isArray(token)
+            childElem = kidomi(token)
+        else
+            parsedAttr = parseAttributes(token)
+            addAttributes(elem, parsedAttr)
+            childElem = kidomi('')
+        elem.appendChild(childElem)
+    else if data.length >= 3
+        # Cases:
+        # ['elem', ['sub-elem1', ...], ['sub-elem2', ...], ..., text]
+        # ['elem', ['sub-elem1'], ['sub-elem2'], ...]
+        # ['elem', {'attr1' : value}, ['sub-elem1', ...], ['sub-elem2', ...], ..., text]
+        # ['elem', {'attr1' : value}, ['sub-elem1', ...], ['sub-elem2', ...], ...]
+        subElemStartIndex = 1
+        if isObject(data[1])
             parsedAttr = parseAttributes(data[1])
             addAttributes(elem, parsedAttr)
-            childElem = parseArray(data[2])
+            subElemStartIndex = 2
+        for subArr in data[subElemStartIndex..]
+            childElem = kidomi(subArr)
             elem.appendChild(childElem)
     elem
 
@@ -104,3 +110,7 @@ isArray = (arr) ->
 kidomi.isString =
 isString = (s) ->
     typeof(s) == 'string' or s instanceof(String);
+
+kidomi.isObject =
+isObject = (obj) ->
+    obj?.constructor == Object

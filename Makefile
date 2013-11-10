@@ -1,6 +1,6 @@
 BUILD_DIR = build
 COFFEE = coffee --map -o $(BUILD_DIR)
-CLOSURE = closure-compiler # --compilation_level ADVANCED_OPTIMIZATIONS
+CLOSURE = closure-compiler --compilation_level ADVANCED_OPTIMIZATIONS
 SRC_DIR = src
 
 
@@ -22,6 +22,10 @@ TEST_DEST_FILES = \
 	$(BUILD_DIR)/qunit-1.12.0.css \
 	$(BUILD_DIR)/qunit-1.12.0.js
 
+TEST_RELEASE_DEST_FILES = \
+	$(TEST_DEST_FILES) \
+	$(BUILD_DIR)/test.release.html
+
 
 all: release
 
@@ -29,23 +33,29 @@ release: $(BUILD_DIR)/kidomi.min.js
 
 debug: $(BUILD_DIR)/kidomi.js
 
-test: $(BUILD_DIR)/kidomi.test.js $(TEST_DEST_FILES)
+test: $(BUILD_DIR)/kidomi.test.js
 
-run-test: test
+release-test: $(BUILD_DIR)/kidomi.test.release.js
+
+run-test: test $(TEST_DEST_FILES)
 	phantomjs $(BUILD_DIR)/run-qunit.js $(BUILD_DIR)/test.html
 
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+run-release-test: release-test $(TEST_RELEASE_DEST_FILES)
+	phantomjs $(BUILD_DIR)/run-qunit.js $(BUILD_DIR)/test.release.html
 
-$(BUILD_DIR)/kidomi.min.js: $(BUILD_DIR) $(BUILD_DIR)/kidomi.js
+$(BUILD_DIR)/kidomi.min.js: $(BUILD_DIR)/kidomi.js
 	$(CLOSURE) --js $(BUILD_DIR)/kidomi.js \
 		--js_output_file $(BUILD_DIR)/kidomi.min.js
 
-$(BUILD_DIR)/kidomi.js: $(BUILD_DIR) $(SRC_DIR)/kidomi.coffee
+$(BUILD_DIR)/kidomi.js: $(SRC_DIR)/kidomi.coffee
+	mkdir -p $(BUILD_DIR)
 	$(COFFEE) -c $(SRC_DIR)/kidomi.coffee
 
-$(BUILD_DIR)/kidomi.test.js: $(DEBUG_TEST_SRC_FILES)
+$(BUILD_DIR)/kidomi.test.js: $(DEBUG_TEST_SRC_FILES) $(BUILD_DIR)/kidomi.js
 	$(COFFEE) --bare -j kidomi.test.js -c $(DEBUG_TEST_SRC_FILES)
+
+$(BUILD_DIR)/kidomi.test.release.js: $(RELEASE_TEST_SRC_FILES) $(BUILD_DIR)/kidomi.min.js
+	$(COFFEE) --bare -j kidomi.test.release.js -c $(RELEASE_TEST_SRC_FILES)
 
 
 $(BUILD_DIR)/run-qunit.js: $(TEST_DIR)/run-qunit.js
@@ -53,6 +63,9 @@ $(BUILD_DIR)/run-qunit.js: $(TEST_DIR)/run-qunit.js
 
 $(BUILD_DIR)/test.html: $(TEST_DIR)/test.html
 	cp $(TEST_DIR)/test.html $(BUILD_DIR)
+
+$(BUILD_DIR)/test.release.html: $(TEST_DIR)/test.release.html
+	cp $(TEST_DIR)/test.release.html $(BUILD_DIR)
 
 $(BUILD_DIR)/qunit-1.12.0.js: $(TEST_DIR)/qunit-1.12.0.js
 	cp $(TEST_DIR)/qunit-1.12.0.js $(BUILD_DIR)

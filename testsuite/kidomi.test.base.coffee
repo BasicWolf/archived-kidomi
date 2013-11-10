@@ -1,5 +1,5 @@
 equals = (expected, actual, message) ->
-    equal(actual, expected, message)
+    window['equal'](actual, expected, message)
 
 deepEquals = (expected, actual, message) ->
-    deepEqual(actual, expected, message)
+    window['deepEqual'](actual, expected, message)

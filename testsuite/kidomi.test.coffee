@@ -4,67 +4,6 @@ test('Smoketest', ->
     equals(1, 1))
 
 
-module('parseArray')
-
-test('wrong input type', ->
-    throws(-> kidomi.parseArray({}))
-    throws(-> kidomi.parseArray([])))
-
-test('wrong tag token name', ->
-    throws(-> kidomi.parseArray([''])))
-
-test('wrong input length', ->
-    throws(-> kidomi.parseArray([1, 2, 3, 4])))
-
-
-test('node with no-id no-classes name', ->
-    n = kidomi.parseArray(['div'])
-    equals("DIV", n.tagName))
-
-test('node with id, no-classes name', ->
-    n = kidomi.parseArray(['div#content'])
-    equals("content", n.id))
-
-test('node with id and classes name', ->
-    n = kidomi.parseArray(['div#content.class1.class2'])
-    equals('class1 class2', n.className))
-
-test('node is HTMLElement', ->
-    n = kidomi.parseArray(['div'])
-    ok(n instanceof HTMLElement))
-
-test('Parse attributes, no children', ->
-    data =
-        ['form', {
-            'class': ['class1', 'class2']
-            'style':
-                'color': '#aaa'
-                'text-decoration': 'line-through'
-            'action': 'getform.php'
-            'method': 'get'
-        }]
-
-    n = kidomi.parseArray(data)
-    equals("FORM", n.tagName)
-    equals(' class1 class2', n.className)
-    equals('rgb(170, 170, 170)', n.style.color)
-    equals('line-through', n.style.textDecoration)
-    equals('getform.php', n.getAttribute('action'))
-    equals('get', n.getAttribute('method')))
-
-test('Parse attributes, with children', ->
-    data =
-        ['form', {
-            'class': ['class1', 'class2']
-            'style':
-                'color': '#aaa'
-                'text-decoration': 'line-through'
-            'action': 'getform.php'
-            'method': 'get'
-        }, 'innerString']
-    n = kidomi.parseArray(data)
-    equals('innerString', n.innerText))
-
 module('addAttributes')
 
 test('add attributes to form', ->
@@ -188,3 +127,9 @@ test('isString', ->
     ok(not kidomi.isString({}))
     ok(not kidomi.isString([]))
     ok(not kidomi.isString(10)))
+
+test('isObject', ->
+    ok(kidomi.isObject({}))
+    ok(not kidomi.isObject(''))
+    ok(not kidomi.isObject([]))
+    ok(not kidomi.isObject(10)))
