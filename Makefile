@@ -33,14 +33,14 @@ release: $(BUILD_DIR)/kidomi.min.js
 
 debug: $(BUILD_DIR)/kidomi.js
 
-test: $(BUILD_DIR)/kidomi.test.js
+test: $(BUILD_DIR)/kidomi.test.js $(TEST_DEST_FILES)
 
-release-test: $(BUILD_DIR)/kidomi.test.release.js
+release-test: $(BUILD_DIR)/kidomi.test.release.js $(TEST_RELEASE_DEST_FILES)
 
-run-test: test $(TEST_DEST_FILES)
+run-test: test
 	phantomjs $(BUILD_DIR)/run-qunit.js $(BUILD_DIR)/test.html
 
-run-release-test: release-test $(TEST_RELEASE_DEST_FILES)
+run-release-test: release-test
 	phantomjs $(BUILD_DIR)/run-qunit.js $(BUILD_DIR)/test.release.html
 
 $(BUILD_DIR)/kidomi.min.js: $(BUILD_DIR)/kidomi.js

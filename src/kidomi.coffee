@@ -1,5 +1,7 @@
 window['kidomi'] =
 kidomi = (data) ->
+    # Filter existing nodes or objects which can be
+    # directly converted to a node.
     node = extractNode(data)
     if node?
         return node
@@ -25,7 +27,7 @@ kidomi = (data) ->
         # ['elem', ['sub-elem']]
         # ['elem', {'attr1' : value}]
         token = data[1]
-        if isString(token) or isArray(token)
+        if not isObject(token)
             childElem = kidomi(token)
         else
             parsedAttr = parseAttributes(token)
@@ -34,10 +36,10 @@ kidomi = (data) ->
         elem.appendChild(childElem)
     else if data.length >= 3
         # Cases:
-        # ['elem', ['sub-elem1', ...], ['sub-elem2', ...], ..., text]
-        # ['elem', ['sub-elem1'], ['sub-elem2'], ...]
-        # ['elem', {'attr1' : value}, ['sub-elem1', ...], ['sub-elem2', ...], ..., text]
-        # ['elem', {'attr1' : value}, ['sub-elem1', ...], ['sub-elem2', ...], ...]
+        # ['elem', ['sub-elem1', ...], ..., text]
+        # ['elem', ['sub-elem1'], ...]
+        # ['elem', {'attr1' : value}, ['sub-elem1', ...], ..., text]
+        # ['elem', {'attr1' : value}, ['sub-elem1', ...], ...]
         subElemStartIndex = 1
         if isObject(data[1])
             parsedAttr = parseAttributes(data[1])
@@ -48,7 +50,7 @@ kidomi = (data) ->
             elem.appendChild(childElem)
     elem
 
-
+## Returns a node if obj is an existing node or can be converted to a node.
 kidomi.extractNode =
 extractNode = (obj) ->
     if isString(obj)
@@ -109,8 +111,8 @@ parseTagToken = (tagToken) ->
         classes: classSplitData
     }
 
+
 ### utility functions ###
-#########################
 
 kidomi.isArray =
 isArray = (arr) ->

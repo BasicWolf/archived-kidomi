@@ -86,7 +86,7 @@ test('parse multiple sub-nodes, text in the end', ->
 test('parse sub-node which is HTML element', ->
     n2 = kidomi(['span'])
     n = kidomi(['div', n2])
-    equals('SPAN', n.children[0]))
+    equals('SPAN', n.children[0].tagName))
 
 test('parse multiple sub-nodes with attributes', ->
     data =
