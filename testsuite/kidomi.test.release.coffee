@@ -26,7 +26,7 @@ test('node is HTMLElement', ->
     n = kidomi(['div'])
     ok(n instanceof HTMLElement))
 
-test('Parse attributes, no children', ->
+test('parse attributes, no children', ->
     data =
         ['form', {
             'class': ['class1', 'class2']
@@ -45,7 +45,7 @@ test('Parse attributes, no children', ->
     equals('getform.php', n.getAttribute('action'))
     equals('get', n.getAttribute('method')))
 
-test('Parse attributes, with children', ->
+test('parse attributes, with children', ->
     data =
         ['form', {
             'class': ['class1', 'class2']
@@ -58,7 +58,7 @@ test('Parse attributes, with children', ->
     n = kidomi(data)
     equals('innerString', n.innerText))
 
-test('Parse attributes, node name with classes', ->
+test('parse attributes, node name with classes', ->
     data =
         ['div.class0', {
             'class': ['class1', 'class2']
@@ -66,7 +66,7 @@ test('Parse attributes, node name with classes', ->
     n = kidomi(data)
     equals('class0 class1 class2', n.className))
 
-test('Parse multiple sub-nodes', ->
+test('parse multiple sub-nodes', ->
     data = ['div', ['span#span1'], ['span#span2']]
     n = kidomi(data)
     equals(2, n.children.length)
@@ -75,8 +75,7 @@ test('Parse multiple sub-nodes', ->
     equals('span1', n.children[0].id)
     equals('span2', n.children[1].id))
 
-
-test('Parse multiple sub-nodes, text in the end', ->
+test('parse multiple sub-nodes, text in the end', ->
     data = ['div', ['span#span1'], 'some text']
     n = kidomi(data)
     equals(1, n.children.length)
@@ -84,7 +83,12 @@ test('Parse multiple sub-nodes, text in the end', ->
     equals('span1', n.children[0].id)
     equals('some text', n.innerText))
 
-test('Parse multiple sub-nodes with attributes', ->
+test('parse sub-node which is HTML element', ->
+    n2 = kidomi(['span'])
+    n = kidomi(['div', n2])
+    equals('SPAN', n.children[0]))
+
+test('parse multiple sub-nodes with attributes', ->
     data =
         ['div.divclass',
             ['span#span1', {'class': ['class1', 'class2']}, ['span#span2']],

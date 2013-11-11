@@ -4,6 +4,17 @@ test('Smoketest', ->
     equals(1, 1))
 
 
+module('extractNode')
+
+test('extract text', ->
+    n = kidomi.extractNode('some text')
+    ok(n instanceof Text))
+
+test('extract node', ->
+    n2 = document.createElement('div')
+    n = kidomi.extractNode(n2)
+    ok(n instanceof Node))
+
 module('addAttributes')
 
 test('add attributes to form', ->

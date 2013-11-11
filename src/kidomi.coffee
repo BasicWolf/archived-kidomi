@@ -1,7 +1,8 @@
 window['kidomi'] =
 kidomi = (data) ->
-    if isString(data)
-        return document.createTextNode(data)
+    node = extractNode(data)
+    if node?
+        return node
 
     if not isArray(data)
         throw "Expected an array, got: #{data}"
@@ -47,6 +48,14 @@ kidomi = (data) ->
             elem.appendChild(childElem)
     elem
 
+
+kidomi.extractNode =
+extractNode = (obj) ->
+    if isString(obj)
+        return document.createTextNode(obj)
+    if obj instanceof Node
+        return obj
+    null
 
 kidomi.addAttributes =
 addAttributes = (elem, parsedAttr) ->
