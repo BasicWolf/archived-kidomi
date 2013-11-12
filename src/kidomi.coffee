@@ -1,3 +1,8 @@
+###*@license kiana 0.1
+    Copyright (c) 2013 Zaur Nasibov, http://znasibov.info
+    Distributed under the MIT license
+###
+
 window['kidomi'] =
 kidomi = (data) ->
     # Filter existing nodes or objects which can be
@@ -13,13 +18,7 @@ kidomi = (data) ->
 
     tagToken = data[0]
     tagData = parseTagToken(tagToken)
-    tagName = tagData.name
-    if tagName == ''
-        throw 'Empty tag name in #{data}'
-
-    elem = document.createElement(tagName)
-    elem.id = tagData.id
-    elem.className = tagData.classes.join(' ')
+    elem = makeElementFromTagData(tagData)
 
     if data.length == 2
         # Cases:
@@ -30,8 +29,7 @@ kidomi = (data) ->
         if not isObject(token)
             childElem = kidomi(token)
         else
-            parsedAttr = parseAttributes(token)
-            addAttributes(elem, parsedAttr)
+            addAttributes(elem, token)
             childElem = kidomi('')
         elem.appendChild(childElem)
     else if data.length >= 3
@@ -42,13 +40,13 @@ kidomi = (data) ->
         # ['elem', {'attr1' : value}, ['sub-elem1', ...], ...]
         subElemStartIndex = 1
         if isObject(data[1])
-            parsedAttr = parseAttributes(data[1])
-            addAttributes(elem, parsedAttr)
+            addAttributes(elem, data[1])
             subElemStartIndex = 2
         for subArr in data[subElemStartIndex..]
             childElem = kidomi(subArr)
             elem.appendChild(childElem)
     elem
+
 
 ## Returns a node if obj is an existing node or can be converted to a node.
 kidomi.extractNode =
@@ -59,42 +57,43 @@ extractNode = (obj) ->
         return obj
     null
 
+
+kidomi.makeElementFromTagData =
+makeElementFromTagData = (tagData) ->
+    if tagData.name == ''
+        throw 'Empty tag name in #{data}'
+    elem = document.createElement(tagData.name)
+    if tagData.id != ''
+        elem.id = tagData.id
+    if tagData.classes.length > 0
+        elem.className = tagData.classes.join(' ')
+    elem
+
+
 kidomi.addAttributes =
-addAttributes = (elem, parsedAttr) ->
-    elem.style.cssText += parsedAttr.css.style
-    elem.className += ' ' + parsedAttr.css.class
-    for attr, val of parsedAttr.attr
-        elem.setAttribute(attr, val)
+addAttributes = (elem, data) ->
+    if data.style?
+        styleString = if isString(data.style)
+            data.style
+        else
+            styleItems = []
+            for name, val of data.style
+                styleItems.push("#{name}: #{val};")
+            styleItems.join(' ')
+        elem.style.cssText = styleString
 
+    if data.class?
+        classString = if isArray(data.class)
+            data.class.join(' ')
+        else
+            data.class
+        if elem.className ?= ''
+            elem.className += ' '
+        elem.className += classString
 
-kidomi.parseAttributes =
-parseAttributes = (data) ->
-    classData = data.class ? ''
-    classString = if isArray(classData)
-        classData.join(' ')
-    else
-        "#{classData}"
-    delete data.class
-
-    styleData = data.style ? ''
-    styleString = if isString(styleData)
-        styleData
-    else
-        styleItems = []
-        for name, val of styleData
-            styleItems.push("#{name}: #{val};")
-        styleItems.join(' ')
-    delete data.style
-
-    attributes = {}
     for name, val of data
-        attributes[name] = val
-    {
-        css:
-            class: classString
-            style: styleString
-        attr: attributes
-    }
+        if name not in ['class', 'style']
+            elem.setAttribute(name, val)
 
 
 kidomi.parseTagToken =

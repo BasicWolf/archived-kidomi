@@ -7,25 +7,6 @@ test('wrong input type', ->
 test('wrong tag token name', ->
     throws(-> kidomi([''])))
 
-test('wrong input length', ->
-    throws(-> kidomi([1, 2, 3, 4])))
-
-test('node with no-id no-classes name', ->
-    n = kidomi(['div'])
-    equals("DIV", n.tagName))
-
-test('node with id, no-classes name', ->
-    n = kidomi(['div#content'])
-    equals("content", n.id))
-
-test('node with id and classes name', ->
-    n = kidomi(['div#content.class1.class2'])
-    equals('class1 class2', n.className))
-
-test('node is HTMLElement', ->
-    n = kidomi(['div'])
-    ok(n instanceof HTMLElement))
-
 test('parse attributes, no children', ->
     data =
         ['form', {
@@ -39,7 +20,7 @@ test('parse attributes, no children', ->
 
     n = kidomi(data)
     equals("FORM", n.tagName)
-    equals(' class1 class2', n.className)
+    equals('class1 class2', n.className)
     equals('rgb(170, 170, 170)', n.style.color)
     equals('line-through', n.style.textDecoration)
     equals('getform.php', n.getAttribute('action'))
@@ -110,8 +91,22 @@ test('parse multiple sub-nodes with attributes', ->
 
     fe  = n.children[1]
     equals("FORM", fe.tagName)
-    equals(' class1 class2', fe.className)
+    equals('class1 class2', fe.className)
     equals('rgb(170, 170, 170)', fe.style.color)
     equals('line-through', fe.style.textDecoration)
     equals('getform.php', fe.getAttribute('action'))
-    equals('get', fe.getAttribute('method')))
+    equals('get', fe.getAttribute('method'))
+
+    elem = kidomi(
+        ['div#main.content',
+            ['span', {'style': {'color': 'blue'}}, 'Select file'],
+            ['form', {
+                'name': 'inputName',
+                'action': 'getform.php',
+                'method': 'get'},
+            'Username: ',
+            ['input', {'type': 'text', 'name': 'user'}],
+            ['input', {'type': 'submit', 'value': 'Submit'}]]])
+    console.log(elem.outerHTML)
+
+    )

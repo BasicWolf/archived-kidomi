@@ -15,6 +15,37 @@ test('extract node', ->
     n = kidomi.extractNode(n2)
     ok(n instanceof Node))
 
+
+module('makeElementFromTagData')
+
+# test('
+
+test('node is HTMLElement', ->
+    tagData = kidomi.parseTagToken('div')
+    n = kidomi.makeElementFromTagData(tagData)
+    ok(n instanceof HTMLElement))
+
+test('node with no-id no-classes name', ->
+    tagData = kidomi.parseTagToken('div')
+    n = kidomi.makeElementFromTagData(tagData)
+    equals("DIV", n.tagName))
+
+test('node with id, no-classes name', ->
+    tagData = kidomi.parseTagToken('div#content')
+    n = kidomi.makeElementFromTagData(tagData)
+    equals("content", n.id)
+    equals(n.className, ''))
+
+test('node with no id, two classes', ->
+    tagData = kidomi.parseTagToken('div.class1.class2')
+    n = kidomi.makeElementFromTagData(tagData)
+    equals('class1 class2', n.className))
+
+# test('node with empty name', ->
+#     n = kidomi(['div#content.class1.class2'])
+#     equals('class1 class2', n.className))
+
+
 module('addAttributes')
 
 test('add attributes to form', ->
@@ -26,54 +57,53 @@ test('add attributes to form', ->
         'action': 'getform.php'
         'method': 'get'
     n = document.createElement('form')
-    parsedAttr = kidomi.parseAttributes(attr)
-    kidomi.addAttributes(n, parsedAttr)
-    equals('getform.php', n.getAttribute('action'))
-)
-
-module('parseAttributes')
+    kidomi.addAttributes(n, attr)
+    equals('getform.php', n.getAttribute('action')))
 
 test('class only; class as a list', ->
-    a = kidomi.parseAttributes({'class': ['class1', 'class2']})
-    equals('class1 class2', a.css.class))
+    n = kidomi(['div'])
+    a = kidomi.addAttributes(n, {'class': ['class1', 'class2']})
+    equals('class1 class2', n.className))
 
 test('class only; class as a string', ->
-    a = kidomi.parseAttributes({'class': 'class1 class2'})
-    equals('class1 class2', a.css.class))
+    n = kidomi('div')
+    a = kidomi.addAttributes(n, {'class': 'class1 class2'})
+    equals('class1 class2', n.className))
 
 test('style only; style as a map', ->
     attr = 'style':
         'color': '#aaa'
         'text-decoration': 'line-through'
 
-    a = kidomi.parseAttributes(attr)
+    n = kidomi(['div'])
+    a = kidomi.addAttributes(n, attr)
     equals('color: #aaa; text-decoration: line-through;',
-           a.css.style))
+           n.style.cssText))
 
-test('style only; style as a string', ->
-    a = kidomi.parseAttributes({'style': 'color: #aaa;'})
-    equals('color: #aaa;', a.css.style))
+# test('style only; style as a string', ->
+#     a = kidomi.parseAttributes({'style': 'color: #aaa;'})
+#     equals('color: #aaa;', a.css.style))
 
-test('various attributes, no class or style', ->
-    a = kidomi.parseAttributes({'action': 'getform.php', 'method': 'get'})
-    equals('getform.php', a.attr.action)
-    equals('get', a.attr.method))
+# test('various attributes, no class or style', ->
+#     a = kidomi.parseAttributes({'action': 'getform.php', 'method': 'get'})
+#     equals('getform.php', a.attr.action)
+#     equals('get', a.attr.method))
 
-test('various attributes, with class and style', ->
-    attr =
-        'class': ['class1', 'class2']
-        'style':
-            'color': '#aaa'
-            'text-decoration': 'line-through'
-        'action': 'getform.php'
-        'method': 'get'
+# test('various attributes, with class and style', ->
+#     attr =
+#         'class': ['class1', 'class2']
+#         'style':
+#             'color': '#aaa'
+#             'text-decoration': 'line-through'
+#         'action': 'getform.php'
+#         'method': 'get'
 
-    a = kidomi.parseAttributes(attr)
-    equals('class1 class2', a.css.class)
-    equals('color: #aaa; text-decoration: line-through;',
-           a.css.style)
-    equals('getform.php', a.attr.action)
-    equals('get', a.attr.method))
+#     a = kidomi.parseAttributes(attr)
+#     equals('class1 class2', a.css.class)
+#     equals('color: #aaa; text-decoration: line-through;',
+#            a.css.style)
+#     equals('getform.php', a.attr.action)
+#     equals('get', a.attr.method))
 
 
 module('parseTagToken')
