@@ -95,18 +95,4 @@ test('parse multiple sub-nodes with attributes', ->
     equals('rgb(170, 170, 170)', fe.style.color)
     equals('line-through', fe.style.textDecoration)
     equals('getform.php', fe.getAttribute('action'))
-    equals('get', fe.getAttribute('method'))
-
-    elem = kidomi(
-        ['div#main.content',
-            ['span', {'style': {'color': 'blue'}}, 'Select file'],
-            ['form', {
-                'name': 'inputName',
-                'action': 'getform.php',
-                'method': 'get'},
-            'Username: ',
-            ['input', {'type': 'text', 'name': 'user'}],
-            ['input', {'type': 'submit', 'value': 'Submit'}]]])
-    console.log(elem.outerHTML)
-
-    )
+    equals('get', fe.getAttribute('method')))

@@ -62,48 +62,52 @@ test('add attributes to form', ->
 
 test('class only; class as a list', ->
     n = kidomi(['div'])
-    a = kidomi.addAttributes(n, {'class': ['class1', 'class2']})
+    kidomi.addAttributes(n, {'class': ['class1', 'class2']})
     equals('class1 class2', n.className))
 
 test('class only; class as a string', ->
     n = kidomi('div')
-    a = kidomi.addAttributes(n, {'class': 'class1 class2'})
+    kidomi.addAttributes(n, {'class': 'class1 class2'})
     equals('class1 class2', n.className))
 
 test('style only; style as a map', ->
-    attr = 'style':
-        'color': '#aaa'
-        'text-decoration': 'line-through'
+    attr =
+        'style':
+            'color': '#aaa'
+            'text-decoration': 'line-through'
 
     n = kidomi(['div'])
-    a = kidomi.addAttributes(n, attr)
-    equals('color: #aaa; text-decoration: line-through;',
-           n.style.cssText))
+    kidomi.addAttributes(n, attr)
+    equals('color: rgb(170, 170, 170); text-decoration: line-through;',
+           n.style.cssText.trim()))
 
-# test('style only; style as a string', ->
-#     a = kidomi.parseAttributes({'style': 'color: #aaa;'})
-#     equals('color: #aaa;', a.css.style))
+test('style only; style as a string', ->
+    n = kidomi(['div'])
+    kidomi.addAttributes(n, {'style': 'color: #aaa;'})
+    equals('color: rgb(170, 170, 170);', n.style.cssText.trim()))
 
-# test('various attributes, no class or style', ->
-#     a = kidomi.parseAttributes({'action': 'getform.php', 'method': 'get'})
-#     equals('getform.php', a.attr.action)
-#     equals('get', a.attr.method))
+test('various attributes, no class or style', ->
+    n = kidomi(['div'])
+    kidomi.addAttributes(n, {'action': 'getform.php', 'method': 'get'})
+    equals('getform.php', n.getAttribute('action'))
+    equals('get', n.getAttribute('method')))
 
-# test('various attributes, with class and style', ->
-#     attr =
-#         'class': ['class1', 'class2']
-#         'style':
-#             'color': '#aaa'
-#             'text-decoration': 'line-through'
-#         'action': 'getform.php'
-#         'method': 'get'
+test('various attributes, with class and style', ->
+    attr =
+        'class': ['class1', 'class2']
+        'style':
+            'color': '#aaa'
+            'text-decoration': 'line-through'
+        'action': 'getform.php'
+        'method': 'get'
 
-#     a = kidomi.parseAttributes(attr)
-#     equals('class1 class2', a.css.class)
-#     equals('color: #aaa; text-decoration: line-through;',
-#            a.css.style)
-#     equals('getform.php', a.attr.action)
-#     equals('get', a.attr.method))
+    n = kidomi(['div'])
+    kidomi.addAttributes(n, attr)
+    equals('class1 class2', n.className)
+    equals('color: rgb(170, 170, 170); text-decoration: line-through;',
+           n.style.cssText.trim())
+    equals('getform.php', n.getAttribute('action'))
+    equals('get', n.getAttribute('method')))
 
 
 module('parseTagToken')

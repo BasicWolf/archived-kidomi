@@ -111,8 +111,6 @@ parseTagToken = (tagToken) ->
     }
 
 
-### utility functions ###
-
 kidomi.isArray =
 isArray = (arr) ->
     arr instanceof Array
