@@ -1,4 +1,4 @@
-###*@license kiana 0.1
+###*@license kidomi 0.1
     Copyright (c) 2013 Zaur Nasibov, http://znasibov.info
     Distributed under the MIT license
 ###
