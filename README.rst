@@ -1,7 +1,9 @@
 kidomi
 ======
 
-A JSON-to-DOM templating library.
+A JSON-to-DOM templating library. To download the library check
+the ``build/`` directory in one of the corresponding repository
+tags at https://github.com/BasicWolf/kidomi
 
 Rationale
 =========
