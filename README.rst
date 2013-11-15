@@ -6,7 +6,7 @@ A JSON-to-DOM templating library.
 Download
 ========
 
-* `v0.1 https://github.com/BasicWolf/kidomi/archive/v0.1.zip`_
+* `v0.1 <https://github.com/BasicWolf/kidomi/archive/v0.1.zip>`_
 
 
 Rationale
