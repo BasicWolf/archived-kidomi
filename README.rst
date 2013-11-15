@@ -20,7 +20,7 @@ e.g.:
          :text-decoration "line-through"}}
       "hello world!"])
 
-But with the JavaScript arrays and objects, there is a way to create
+But with JavaScript arrays and objects, there is a way to create
 something similar:
 
 .. code-block:: javascript
@@ -32,9 +32,10 @@ something similar:
            "hello world!"])
 
 
-**kidomi** is written in CoffeeScript. It is covered by unit tests via QUnit_
-and can be used by a `Google Closure`_ compiler in a complex compilation or
-separately (e.g. to produce a minified output).
+**kidomi** is written in CoffeeScript. It is covered by unit tests
+via QUnit_ and can be used by a `Google Closure`_ compiler in
+an *ADVANCED_MOE* compilation or separately (e.g. to produce a
+minified output).
 
 
 Usage
@@ -155,6 +156,29 @@ You will need the following tools to build and test **kidomi**:
    Closure restrictions in mind.
 3. PhantomJS_ is used to run the unit tests from a shell. You can as
    well run them in a normal browser.
+
+
+Advanced usage
+==============
+
+Referencing elements
+--------------------
+
+One of the patterns where **kidomi** might be especially handy is
+when you have to create certain HTML elements before adding them in
+a DOM structure. For example:
+
+.. code-block:: javascript
+
+   button = kidomi(['button']);
+   button.addEventListener('click', function(){alert('Hello world');}, false);
+
+   myDiv = kidomi(['div',
+                    ['span', 'Click me:'],
+                    button]);
+
+   document.body.appendChild(myDiv);
+
 
 .. _dommy: https://github.com/Prismatic/dommy
 .. _QUnit: http://qunitjs.com/
