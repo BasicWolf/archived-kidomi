@@ -70,6 +70,11 @@ test('class only; class as a string', ->
     kidomi.addAttributes(n, {'class': 'class1 class2'})
     equals('class1 class2', n.className))
 
+test('class only; class as an empty array', ->
+    n = kidomi('div')
+    kidomi.addAttributes(n, {'class': []})
+    equals('', n.className))
+
 test('style only; style as a map', ->
     attr =
         'style':
@@ -85,6 +90,11 @@ test('style only; style as a string', ->
     n = kidomi(['div'])
     kidomi.addAttributes(n, {'style': 'color: #aaa;'})
     equals('color: rgb(170, 170, 170);', n.style.cssText.trim()))
+
+test('style only; style as an empty object', ->
+    n = kidomi(['div'])
+    kidomi.addAttributes(n, {'style': {}})
+    equals('', n.style.cssText.trim()))
 
 test('various attributes, no class or style', ->
     n = kidomi(['div'])

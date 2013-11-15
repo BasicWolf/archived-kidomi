@@ -8,12 +8,12 @@ TEST_DIR = testsuite
 
 
 DEBUG_TEST_SRC_FILES = \
-	$(TEST_DIR)/kidomi.test.base.coffee \
+	$(TEST_DIR)/kidomi.test.common.coffee \
 	$(TEST_DIR)/kidomi.test.coffee \
 	$(TEST_DIR)/kidomi.test.release.coffee
 
 RELEASE_TEST_SRC_FILES = \
-	$(TEST_DIR)/kidomi.test.base.coffee \
+	$(TEST_DIR)/kidomi.test.common.coffee \
 	$(TEST_DIR)/kidomi.test.release.coffee
 
 TEST_DEST_FILES = \

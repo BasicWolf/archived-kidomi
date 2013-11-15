@@ -40,7 +40,7 @@ separately (e.g. to produce a minified output).
 Usage
 =====
 
-The `kidomi(data)` function returns a *HTMLNode* constructed from a *data*,
+The ``kidomi(data)`` function returns a *HTMLNode* constructed from a *data*,
 for example:
 
 .. code-block:: javascript
