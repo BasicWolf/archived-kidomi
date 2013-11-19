@@ -35,28 +35,40 @@ debug: $(BUILD_DIR)/kidomi.js
 
 test: $(BUILD_DIR)/kidomi.test.js $(TEST_DEST_FILES)
 
-release-test: $(BUILD_DIR)/kidomi.test.release.js $(TEST_RELEASE_DEST_FILES)
+test-release-bundle: 
+
+test-release-standalone: $(BUILD_DIR)/kidomi.test.release.js \
+						 $(TEST_RELEASE_DEST_FILES)
 
 run-test: test
 	phantomjs $(BUILD_DIR)/run-qunit.js $(BUILD_DIR)/test.html
 
-run-release-test: release-test
-	phantomjs $(BUILD_DIR)/run-qunit.js $(BUILD_DIR)/test.release.html
+run-test-release-bundle: test
+	phantomjs $(BUILD_DIR)/run-qunit.js $(BUILD_DIR)/test.release.bundle.html
 
-$(BUILD_DIR)/kidomi.min.js: $(BUILD_DIR)/kidomi.js
-	$(CLOSURE) --js $(BUILD_DIR)/kidomi.js \
-		--js_output_file $(BUILD_DIR)/kidomi.min.js
+run-test-release-standalone: release-test
+	phantomjs $(BUILD_DIR)/run-qunit.js $(BUILD_DIR)/test.release.standalone.html
+
 
 $(BUILD_DIR)/kidomi.js: $(SRC_DIR)/kidomi.coffee
 	mkdir -p $(BUILD_DIR)
 	$(COFFEE) -c $(SRC_DIR)/kidomi.coffee
 
+$(BUILD_DIR)/kidomi.min.js: $(BUILD_DIR)/kidomi.js
+	$(CLOSURE) --js $(BUILD_DIR)/kidomi.js \
+		--js_output_file $(BUILD_DIR)/kidomi.min.js
+
 $(BUILD_DIR)/kidomi.test.js: $(DEBUG_TEST_SRC_FILES) $(BUILD_DIR)/kidomi.js
 	$(COFFEE) --bare -j kidomi.test.js -c $(DEBUG_TEST_SRC_FILES)
 
-$(BUILD_DIR)/kidomi.test.release.js: $(RELEASE_TEST_SRC_FILES) $(BUILD_DIR)/kidomi.min.js
+$(BUILD_DIR)/kidomi.test.release.standalone.js: $(RELEASE_TEST_SRC_FILES) \
+												$(BUILD_DIR)/kidomi.min.js
 	$(COFFEE) --bare -j kidomi.test.release.js -c $(RELEASE_TEST_SRC_FILES)
 
+$(BUILD_DIR)/kidomi.test.release.bundle.js: $(BUILD_DIR)/kidomi.test.js
+	$(CLOSURE) --js $(BUILD_DIR)/kidomi.js $(BUILD_DIR)/kidomi.test.js \
+		--externs $(BUILD_DIR)/qunit-1.12.0.js \
+		--js_output_file $(BUILD_DIR)/kidomi.test.min.js
 
 $(BUILD_DIR)/run-qunit.js: $(TEST_DIR)/run-qunit.js
 	cp $(TEST_DIR)/run-qunit.js $(BUILD_DIR)
