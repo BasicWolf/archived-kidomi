@@ -55,6 +55,8 @@ extractNode = (obj) ->
         return document.createTextNode(obj)
     if obj instanceof Node
         return obj
+    if typeof obj == 'number'
+        return '' + obj
     null
 
 
