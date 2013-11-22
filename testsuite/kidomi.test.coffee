@@ -10,10 +10,21 @@ test('extract text', ->
     n = kidomi.extractNode('some text')
     ok(n instanceof Text))
 
+test('extract number as text', ->
+    n = kidomi.extractNode(123)
+    equals('123', n.textContent)
+
+    n = kidomi.extractNode(123.1099)
+    equals('123.1099', n.textContent)
+
+    n = kidomi.extractNode(-123.1099)
+    equals('-123.1099', n.textContent))
+
 test('extract node', ->
     n2 = document.createElement('div')
     n = kidomi.extractNode(n2)
     ok(n instanceof Node))
+
 
 
 module('makeElementFromTagData')

@@ -51,13 +51,14 @@ kidomi = (data) ->
 ## Returns a node if obj is an existing node or can be converted to a node.
 kidomi.extractNode =
 extractNode = (obj) ->
-    if isString(obj)
-        return document.createTextNode(obj)
     if obj instanceof Node
-        return obj
-    if typeof obj == 'number'
-        return '' + obj
-    null
+        obj
+    else if isString(obj)
+        document.createTextNode(obj)
+    else if typeof obj == 'number'
+        document.createTextNode('' + obj)
+    else
+        null
 
 
 kidomi.makeElementFromTagData =
