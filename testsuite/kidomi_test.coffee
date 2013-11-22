@@ -26,10 +26,7 @@ test('extract node', ->
     ok(n instanceof Node))
 
 
-
 module('makeElementFromTagData')
-
-# test('
 
 test('node is HTMLElement', ->
     tagData = kidomi.parseTagToken('div')
@@ -51,10 +48,6 @@ test('node with no id, two classes', ->
     tagData = kidomi.parseTagToken('div.class1.class2')
     n = kidomi.makeElementFromTagData(tagData)
     equals('class1 class2', n.className))
-
-# test('node with empty name', ->
-#     n = kidomi(['div#content.class1.class2'])
-#     equals('class1 class2', n.className))
 
 
 module('addAttributes')

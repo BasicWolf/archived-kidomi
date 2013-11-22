@@ -1,11 +1,11 @@
 module('kidomi')
 
 test('wrong input type', ->
-    throws(-> kidomi({}))
-    throws(-> kidomi([])))
+    raises(-> kidomi({}))
+    raises(-> kidomi([])))
 
 test('wrong tag token name', ->
-    throws(-> kidomi([''])))
+    raises(-> kidomi([''])))
 
 test('parse attributes, no children', ->
     data =
