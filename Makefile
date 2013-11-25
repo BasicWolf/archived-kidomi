@@ -4,6 +4,7 @@ CLOSURE = closure-compiler --compilation_level ADVANCED_OPTIMIZATIONS
 SRC_DIR = src
 TEST_DIR = testsuite
 
+
 DEBUG_TEST_SRC_FILES = \
 	$(TEST_DIR)/kidomi_test_common.coffee \
 	$(TEST_DIR)/kidomi_test.coffee \

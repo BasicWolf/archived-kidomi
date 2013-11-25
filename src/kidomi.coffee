@@ -12,9 +12,9 @@ kidomi = (data) ->
         return node
 
     if not isArray(data)
-        throw "Expected an array, got: #{data}"
+        throw "Kidomi error: expected an array, got: #{data}"
     if data.length == 0
-        throw 'Expected a non-empty array'
+        throw 'Kidomi error: expected a non-empty array'
 
     tagToken = data[0]
     tagData = parseTagToken(tagToken)
@@ -45,7 +45,7 @@ kidomi = (data) ->
         for subArr in data[subElemStartIndex..]
             childElem = kidomi(subArr)
             elem.appendChild(childElem)
-    elem
+    return elem
 
 
 ## Returns a node if obj is an existing node or can be converted to a node.
@@ -64,7 +64,7 @@ extractNode = (obj) ->
 kidomi.makeElementFromTagData =
 makeElementFromTagData = (tagData) ->
     if tagData.name == ''
-        throw 'Empty tag name in #{data}'
+        throw 'Kidomi error: empty tag name in #{data}'
     elem = document.createElement(tagData.name)
     if tagData.id != ''
         elem.id = tagData.id
@@ -97,7 +97,7 @@ addAttributes = (elem, data) ->
     for name, val of data
         if name not in ['class', 'style']
             elem.setAttribute(name, val)
-
+    return # void
 
 kidomi.parseTagToken =
 parseTagToken = (tagToken) ->
