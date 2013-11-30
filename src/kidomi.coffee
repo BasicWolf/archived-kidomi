@@ -64,7 +64,7 @@ extractNode = (obj) ->
 kidomi.makeElementFromTagData =
 makeElementFromTagData = (tagData) ->
     if tagData.name == ''
-        throw 'Kidomi error: empty tag name in #{data}'
+        throw "Kidomi error: empty tag name in #{data}"
     elem = document.createElement(tagData.name)
     if tagData.id != ''
         elem.id = tagData.id
