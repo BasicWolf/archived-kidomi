@@ -1,5 +1,5 @@
-###*@license kidomi 0.1
-    Copyright (c) 2013 Zaur Nasibov, http://znasibov.info
+###*@license kidomi 0.2
+    Copyright (c) 2013 Zaur Nasibov, http://znasibov.info and http://github.com/basicwolf
     Distributed under the MIT license
 ###
 
