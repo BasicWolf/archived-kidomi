@@ -6,6 +6,7 @@ A JSON-to-DOM templating library.
 Download
 ========
 
+* `v0.2 <https://github.com/BasicWolf/kidomi/archive/v0.2.zip>`_
 * `v0.1 <https://github.com/BasicWolf/kidomi/archive/v0.1.zip>`_
 
 
@@ -92,6 +93,8 @@ The ``parsableObject`` is:
 
 
 * A string. The returned object is a `Text node`_.
+* A number. It is automatically converted to string and the returned
+  object is a `Text node`_.
 * A node. The returned object is the same node.
 * An array. This should be discussed a bit thoroughly:
 
@@ -126,13 +129,22 @@ The attributes object has the following syntax:
     'attribute1' : 'value1',
     'attributeN' : 'valueN'}
 
-The ``class`` and ``style`` key-value pairs are optional.
+or
 
-* The ``class`` key-value pair is an array of CSS classes applied
-  to the node. It is concatenated to the classes found in the first
-  item of the ``parsableObject`` array.
-* The ``style`` key-value pair is an object of CSS style properties
-  of the node.
+.. code-block:: javascript
+
+   {'class': 'class1 classN',
+    'style': 'prop1:val1; propN:valN;',
+    'attribute1' : 'value1',
+    'attributeN' : 'valueN'}
+
+The ``class`` and ``style`` key-value pairs or strings are optional.
+
+* The ``class`` key-value pair is an array or a string with CSS classes'
+  names applied to the node. It is appended to the classes found in the
+  first item of the ``parsableObject`` array.
+* The ``style`` key-value pair is an object or a string of CSS style
+  properties of the node.
 
 The ``attributeX`` key-value pairs are the attributes of the node.
 
@@ -177,11 +189,12 @@ a DOM structure. For example:
 .. code-block:: javascript
 
    button = kidomi(['button']);
-   button.addEventListener('click', function(){alert('Hello world');}, false);
+   button.onclick = function(){ alert('Hello world'); };
 
-   myDiv = kidomi(['div',
-                    ['span', 'Click me:'],
-                    button]);
+   myDiv = kidomi(
+               ['div',
+                 ['span', 'Click me:'],
+                   button]);
 
    document.body.appendChild(myDiv);
 
