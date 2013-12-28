@@ -172,6 +172,22 @@ test('blang tag name, id and classes', ->
     equals('', tagData.id)
     deepEquals([], tagData.classes))
 
+module('appendChildren')
+
+test('appendSingleChild', ->
+    parent = document.createElement('tr')
+    child = document.createElement('td')
+    kidomi.appendChildren(parent, child)
+    equals(child, parent.childNodes[0]))
+
+test('appendChildren', ->
+    parent = document.createElement('tr')
+    child0 = document.createElement('td')
+    child1 = document.createElement('td')
+    kidomi.appendChildren(parent, [child0, child1])
+    equals(child0, parent.childNodes[0])
+    equals(child1, parent.childNodes[1]))
+
 
 module('util')
 

@@ -17,21 +17,28 @@ kidomi = (data) ->
         throw 'Kidomi error: expected a non-empty array'
 
     tagToken = data[0]
+    if isArray(tagToken)
+        # expand array case, e.g.
+        # [['td'], ['td'], ['td'], ...]
+        return (kidomi(elem) for elem in data)
     tagData = parseTagToken(tagToken)
     elem = makeElementFromTagData(tagData)
 
     if data.length == 2
-        # Cases:
+        # Basic cases:
         # ['elem', 'text']
         # ['elem', ['sub-elem']]
         # ['elem', {'attr1' : value}]
+        # Expanded array case:
+        # ['tr', [['td'], ['td'], ...]]
         token = data[1]
         if not isObject(token)
             childElem = kidomi(token)
         else
             addAttributes(elem, token)
             childElem = kidomi('')
-        elem.appendChild(childElem)
+        appendChildren(elem, childElem)
+
     else if data.length >= 3
         # Cases:
         # ['elem', ['sub-elem1', ...], ..., text]
@@ -44,7 +51,7 @@ kidomi = (data) ->
             subElemStartIndex = 2
         for subArr in data[subElemStartIndex..]
             childElem = kidomi(subArr)
-            elem.appendChild(childElem)
+            appendChildren(elem, childElem)
     return elem
 
 
@@ -99,6 +106,7 @@ addAttributes = (elem, data) ->
             elem.setAttribute(name, val)
     return # void
 
+
 kidomi.parseTagToken =
 parseTagToken = (tagToken) ->
     classSplitData = tagToken.split('.')
@@ -113,6 +121,15 @@ parseTagToken = (tagToken) ->
         classes: classSplitData
     }
 
+
+kidomi.appendChildren =
+appendChildren = (parent, childElem) ->
+    if isArray(childElem)
+        for el in childElem
+            parent.appendChild(el)
+    else
+        parent.appendChild(childElem)
+    return
 
 kidomi.isArray =
 isArray = (arr) ->

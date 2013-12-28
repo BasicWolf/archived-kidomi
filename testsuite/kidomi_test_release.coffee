@@ -96,3 +96,8 @@ test('parse multiple sub-nodes with attributes', ->
     equals('line-through', fe.style.textDecoration)
     equals('getform.php', fe.getAttribute('action'))
     equals('get', fe.getAttribute('method')))
+
+test('parse expandable array', ->
+    data = ['tr', (['td', "#{i}"] for i in [0..3])]
+    n = kidomi(data)
+    equals(4, n.childNodes.length))
