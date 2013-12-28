@@ -37,7 +37,7 @@ run-test-release-standalone: test-release-standalone
 	phantomjs $(BUILD_DIR)/run-qunit.js $(BUILD_DIR)/test_release_standalone.html
 
 ### testsuite targets ###
-test-all: test test-release-bundle test-release-standaloen
+test-all: test test-release-bundle test-release-standalone
 
 test: $(BUILD_DIR)/kidomi_test.js $(TEST_DEST_FILES) | ${BUILD_DIR}
 
