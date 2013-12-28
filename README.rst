@@ -158,8 +158,31 @@ For example:
 
   // <a href="http://github.com" class="biglink" style="color:red;"></a>
 
-The rest of the array items are nested ``parsableObjects``.
+The rest of the array items are nested ``parsableObjects`` or in a special
+case - an array of arrays with ``parsableObjects``. For example:
 
+.. code-block:: javascript
+
+  // Nested elements
+  ['div', ['div', ['span.name', 'Name: '], ['span.lastname', 'Last name: ']]]
+  /*
+     <div>
+       <div>
+         <span class="name">Name: </span>
+         <span class="lastname">Last name: </span>
+       </div>
+     </div>
+  */
+
+  // Expandable nested array
+  ['tr', [['td', 'First'], ['td', 'Second'], ['td', 'Third']]]
+  /*
+   <tr>
+     <td>First</td>
+     <td>Second</td>
+     <td>Third</td>
+   </tr>
+  */
 
 
 Building and testing
@@ -197,6 +220,21 @@ a DOM structure. For example:
                    button]);
 
    document.body.appendChild(myDiv);
+
+
+List comprehensions in CoffeeScript
+-----------------------------------
+
+List (array) comprehensions are very handy to use as the expandable
+array elements, for example:
+
+.. code-block:: coffeescript
+
+  ['tr', [['td', '1'], ['td', '2'], ['td', '3']]]
+
+  # can be written as:
+
+  ['tr', (['td', "#{i}"] for i in [1..3])]
 
 
 .. _dommy: https://github.com/Prismatic/dommy
