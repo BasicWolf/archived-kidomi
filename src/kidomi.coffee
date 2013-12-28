@@ -1,4 +1,4 @@
-###*@license kidomi 0.2
+###*@license kidomi 0.3
     Copyright (c) 2013 Zaur Nasibov, http://znasibov.info and http://github.com/basicwolf
     Distributed under the MIT license
 ###
@@ -130,6 +130,7 @@ appendChildren = (parent, childElem) ->
     else
         parent.appendChild(childElem)
     return
+
 
 kidomi.isArray =
 isArray = (arr) ->
