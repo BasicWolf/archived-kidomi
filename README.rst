@@ -42,7 +42,7 @@ something similar:
 
 **kidomi** is written in CoffeeScript. It is covered by unit tests
 via QUnit_ and can be used by a `Google Closure`_ compiler in
-an *ADVANCED_MOE* compilation or separately (e.g. to produce a
+an *ADVANCED_MODE* compilation or separately (e.g. to produce a
 minified output).
 
 
