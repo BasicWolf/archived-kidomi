@@ -4,7 +4,15 @@ SRC_DIR = src
 BUILD_DIR = build
 
 ### global targets ###
-all: release
+all: show-usage show-test-usage
+
+show-usage:
+	@echo 'USAGE:'
+	@echo 'release  - an auto build'
+	@echo 'debug    - a single build'
+	@echo 'clean    - cleans the build'
+	@echo ' '
+
 
 release: $(BUILD_DIR)/kidomi.min.js
 

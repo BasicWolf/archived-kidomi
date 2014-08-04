@@ -191,6 +191,14 @@ test('appendChildren', ->
 
 module('util')
 
+
+test('isNode', ->
+    ok(kidomi.isNode(document.createElement('div'))
+    ok(not kidomi.isNode([]))
+    ok(not kidomi.isNode({}))
+    ok(not kidomi.isNode(''))
+    ok(not kidomi.isNode(10))))
+
 test('isArray', ->
     ok(kidomi.isArray([]))
     ok(not kidomi.isArray({}))
@@ -208,3 +216,11 @@ test('isObject', ->
     ok(not kidomi.isObject(''))
     ok(not kidomi.isObject([]))
     ok(not kidomi.isObject(10)))
+
+test('isJquery', ->
+    ok(kidomi.isJquery($('<div>')))
+    ok(not kidomi.isJquery(document.createElement('div')))
+    ok(not kidomi.isJquery([]))
+    ok(not kidomi.isJquery({}))
+    ok(not kidomi.isJquery(''))
+    ok(not kidomi.isJquery(10)))

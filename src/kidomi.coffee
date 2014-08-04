@@ -58,12 +58,14 @@ kidomi = (data) ->
 ## Returns a node if obj is an existing node or can be converted to a node.
 kidomi.extractNode =
 extractNode = (obj) ->
-    if obj instanceof Node
+    if isNode(obj)
         obj
     else if isString(obj)
         document.createTextNode(obj)
     else if typeof obj == 'number'
         document.createTextNode('' + obj)
+    else if isJquery(obj)
+        obj[0]
     else
         null
 
@@ -131,6 +133,13 @@ appendChildren = (parent, childElem) ->
         parent.appendChild(childElem)
     return
 
+kidomi.isJquery =
+isJquery = (obj) ->
+   jQuery? and obj instanceof jQuery
+
+kidomi.isNode =
+isNode = (obj) ->
+    obj instanceof Node
 
 kidomi.isArray =
 isArray = (arr) ->
