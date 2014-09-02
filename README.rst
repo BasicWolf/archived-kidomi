@@ -34,8 +34,8 @@ something similar:
 .. code-block:: javascript
 
   kidomi(['span',
-           {'style':
-             {'color': '#aaa',
+           {style:
+             {color: '#aaa',
               'text-decoration': 'line-through'}},
            "hello world!"])
 
@@ -56,14 +56,14 @@ for example:
 
    elem = kidomi(
         ['div#main.content',
-            ['span', {'style': {'color': 'blue'}}, 'Select file'],
+            ['span', {style: {color: 'blue'}}, 'Select file'],
             ['form', {
-                'name': 'inputName',
-                'action': 'getform.php',
-                'method': 'get'},
+                name: 'inputName',
+                action: 'getform.php',
+                method: 'get'},
             'Username: ',
-            ['input', {'type': 'text', 'name': 'user'}],
-            ['input', {'type': 'submit', 'value': 'Submit'}]]])
+            ['input', {type: 'text', name: 'user'}],
+            ['input', {type: 'submit', value: 'Submit'}]]])
 
 The generated HTML element is:
 
@@ -125,19 +125,19 @@ The attributes object has the following syntax:
 
 .. code-block:: javascript
 
-   {'class': ['class1', 'classN'],
-    'style': {'prop1': 'val1', 'propN': 'valN'},
-    'attribute1' : 'value1',
-    'attributeN' : 'valueN'}
+   {class: ['class1', 'classN'],
+    style: {prop1: 'val1', propN: 'valN'},
+    attribute1: 'value1',
+    attributeN: 'valueN'}
 
 or
 
 .. code-block:: javascript
 
-   {'class': 'class1 classN',
-    'style': 'prop1:val1; propN:valN;',
-    'attribute1' : 'value1',
-    'attributeN' : 'valueN'}
+   {class: 'class1 classN',
+    style: 'prop1:val1; propN:valN;',
+    attribute1: 'value1',
+    attributeN: 'valueN'}
 
 The ``class`` and ``style`` key-value pairs or strings are optional.
 
@@ -153,9 +153,9 @@ For example:
 
 .. code-block:: javascript
 
-  ['a', {'class': ['biglink'],
-         'style': {'color': 'red'},
-         'href': 'http://github.com'}]
+  ['a', {class: ['biglink'],
+         style: {color: 'red'},
+         href: 'http://github.com'}]
 
   // <a href="http://github.com" class="biglink" style="color:red;"></a>
 
